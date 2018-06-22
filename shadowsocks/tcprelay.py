@@ -92,7 +92,7 @@ BUF_SIZE = 32 * 1024
 
 class TCPRelayHandler(object):
     def __init__(self, server, fd_to_handlers, loop, local_sock, config,
-                 dns_resolver, is_local,local_port=None):
+                 dns_resolver, is_local, local_port=0):
         self._server = server
         self._fd_to_handlers = fd_to_handlers
         self._loop = loop
@@ -292,7 +292,7 @@ class TCPRelayHandler(object):
                 raise Exception('can not parse header')
             addrtype, remote_addr, remote_port, header_length = header_result
             logging.info('%s connecting %s:%d from %s:%d' %
-                         (self._local_port,common.to_str(remote_addr), remote_port,
+                         (self._local_port, common.to_str(remote_addr), remote_port,
                           self._client_address[0], self._client_address[1]))
             self._remote_address = (common.to_str(remote_addr), remote_port)
             # pause reading
@@ -561,7 +561,7 @@ class TCPRelay(object):
         self._timeout = config['timeout']
         self._timeouts = []  # a list for all the handlers
         # we trim the timeouts once a while
-        self._timeout_offset = 0   # last checked position for timeout
+        self._timeout_offset = 0  # last checked position for timeout
         self._handler_to_timeouts = {}  # key: handler value: index in timeouts
 
         if is_local:
